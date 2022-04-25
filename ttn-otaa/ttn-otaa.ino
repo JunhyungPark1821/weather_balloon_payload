@@ -1,5 +1,3 @@
-aaaaaa
-
 /*******************************************************************************
  * Copyright (c) 2015 Thomas Telkamp and Matthijs Kooijman
  * Copyright (c) 2018 Terry Moore, MCCI
@@ -237,35 +235,6 @@ void do_send(osjob_t* j){
       float gpsLongRem = longRem.toFloat();
       float gpsAlt = completeAlt.toFloat();
       float temperature = completeTemperature.toFloat();
-      
-//      uint16_t payloadGPSLat = LMIC_f2sflt16(0.12345678);
-//      Serial.println (LMIC_f2sflt16(0.1234));
-//      Serial.println (LMIC_f2sflt16(0.5678));
-//      byte latLow = lowByte(payloadGPSLat);
-//      Serial.println (latLow);
-//      byte latHigh = highByte(payloadGPSLat);
-//      Serial.println (latHigh);
-//      mydata[0] = latLow;
-//      mydata[1] = latHigh;
-
-//      uint16_t payloadGPSLong = LMIC_f2sflt16(0.5678);
-//      byte longLow = lowByte(payloadGPSLong);
-//      byte longHigh = highByte(payloadGPSLong);
-//      mydata[2] = longLow;
-//      mydata[3] = longHigh;
-//
-//      int exponent = completeAlt.substring(0,completeAlt.lastIndexOf('.')).length();
-//      uint16_t payloadGPSAlt = LMIC_f2sflt16(0.69);
-//      byte altLow = lowByte(payloadGPSAlt);
-//      byte altHigh = highByte(payloadGPSAlt);
-//      mydata[4] = altLow;
-//      mydata[5] = altHigh;
-//
-//      uint16_t payloadExp = LMIC_f2sflt16(exponent/10);
-//      byte expLow = lowByte(payloadExp);
-//      byte expHigh = highByte(payloadExp);
-//      mydata[6] = expLow;
-//      mydata[7] = expHigh;
 
       int latWhole = gpsLat;
       uint16_t payloadGPSLatWhole = LMIC_f2sflt16(latWhole/10000.0);
@@ -315,7 +284,7 @@ void do_send(osjob_t* j){
       mydata[13] = longIndHigh;
 
       int tempWhole = temperature;
-      Serial.println (tempWhole);
+//      Serial.println (tempWhole);
       uint16_t temperatureWhole = LMIC_f2sflt16(tempWhole/1000.0);
       byte temperatureWholeLow = lowByte(temperatureWhole);
       byte temperatureWholeHigh = highByte(temperatureWhole);
@@ -323,7 +292,7 @@ void do_send(osjob_t* j){
       mydata[15] = temperatureWholeHigh;
 
       int tempRem = (temperature - double(tempWhole)) * 1000.0;
-      Serial.println (tempRem);
+//      Serial.println (tempRem);
       uint16_t temperatureRem = LMIC_f2sflt16(tempRem/1000.0);
       byte temperatureRemLow = lowByte(temperatureRem);
       byte temperatureRemHigh = highByte(temperatureRem);
@@ -391,7 +360,7 @@ void loop() {
 
     completeTemperature = String(sensors.getTempCByIndex(0));
 
-    Serial.println(completeTemperature);
+//    Serial.println(completeTemperature);
 
     if (radiodata[15] == ',') {
     } else {
