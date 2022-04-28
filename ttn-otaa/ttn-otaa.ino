@@ -39,6 +39,8 @@
 
 #define ONE_WIRE_BUS 12
 #define GPSSerial Serial1
+#define VBATPIN A7
+
 
 // Setup a oneWire instance to communicate with any OneWire devices  
 OneWire oneWire(ONE_WIRE_BUS);
@@ -237,9 +239,9 @@ void do_send(osjob_t* j){
       float temperature = completeTemperature.toFloat();
 
       int latWhole = gpsLat;
-      uint16_t payloadGPSLatWhole = LMIC_f2sflt16(latWhole/10000.0);
-      byte latWholeLow = lowByte(payloadGPSLatWhole);
-      byte latWholeHigh = highByte(payloadGPSLatWhole);
+      uint16_t payloadGPSLatWhole = LMIC_f2sflt16(latWhole/10000.0); //Encode it into 16 bits
+      byte latWholeLow = lowByte(payloadGPSLatWhole); //Bottom 8 bits
+      byte latWholeHigh = highByte(payloadGPSLatWhole); //Top 8 bits
       mydata[0] = latWholeLow;
       mydata[1] = latWholeHigh;
 
@@ -310,7 +312,13 @@ void setup() {
     delay(5000);
     GPSSerial.begin(9600);
     Serial.begin(9600);
-    sensors.begin(); 
+    float measuredvbat = analogRead(VBATPIN);
+    measuredvbat *= 2;    // we divided by 2, so multiply back
+    measuredvbat *= 3.3;  // Multiply by 3.3V, our reference voltage
+    measuredvbat /= 1024; // convert to voltage
+    Serial.print("VBat: " ); Serial.println(measuredvbat);
+
+    sensors.begin();
     Serial.println(F("Starting"));
 
     // LMIC init
@@ -335,7 +343,8 @@ void loop() {
       gpsdata+=c;
     }
   }
-  
+
+  os_runloop_once();
   if(gpsdata.startsWith("$GNGGA,")) {
     gpsdata.replace("$GNGGA,","");
     gpsdata=gpsdata.substring(0,gpsdata.lastIndexOf(','));
@@ -346,7 +355,7 @@ void loop() {
     
     gpsdata.toCharArray(radiodata, gpsdata.length()+1);
 
-    Serial.println (gpsdata);
+//    Serial.println (gpsdata);
 
     completeLat = "";
     completeAlt = "";
@@ -357,6 +366,7 @@ void loop() {
     completeTemperature = "";
 
     sensors.requestTemperatures(); // Send the command to get temperature readings 
+    os_runloop_once();
 
     completeTemperature = String(sensors.getTempCByIndex(0));
 
@@ -378,5 +388,6 @@ void loop() {
         completeAlt += String(radiodata[i]);
       }
     }
+    os_runloop_once();
   }
 }
