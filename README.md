@@ -78,7 +78,3 @@
 <div>
      Assembly and wiring of the Feather M0 were based on  <a href="https://learn.adafruit.com/adafruit-feather-m0-radio-with-lora-radio-module/assembly">Adafruit Feather M0 Radio with LoRa Radio Module Tutorial</a>. The GPS and and temperature sensors are wired to the Feather M0 for collecting data. The temperature sensor was set up following <a href="https://randomnerdtutorials.com/guide-for-ds18b20-temperature-sensor-with-arduino/"> Guide for DS18B20 Temperature Sensor with Arduino</a>. The data transmission programming was based on <a href="https://github.com/oktavianabd/arduino-lmic"> Arduino-LMIC library documentation </a> and the example sketche (<a href="https://github.com/oktavianabd/arduino-lmic/blob/master/examples/ttn-otaa-feather-us915-dht22/ttn-otaa-feather-us915-dht22.ino">ttn-otaa-feather-us915</a>) provided from the library.
 </div>
-
-<h2 id="subtitle" style="margin-top:2em">
-    Programming
-</h2>
